@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
+   utils.load();
     return new SplashScreen(
         seconds: 3,
         navigateAfterSeconds: new AfterSplash(),
@@ -198,24 +198,16 @@ if(connection.isConnected) {
                                     child: RaisedButton(
                                       child: Text("Save"),
                                       onPressed: () {
+
                                         if (_formKey.currentState.validate()) {
                                           _formKey.currentState.save();
-                                          String _icon=null;
+
                                           setState(() {
-                                          List<String>icons=  iconMap.keys.toList();
-                                          for(int i=0;i<icons.length;i++)
-                                            {
-                                              if(_name.text.contains(icons[i]))
-                                                _icon=icons[i];
-                                              return;
-                                            }
-                                            IconData icon;
-                                            if(_icon==null)
-                                              icon=MdiIcons.devices;
-                                            else
-                                              icon=MdiIcons.fromString(_icon);
-                                            utils.devices.add(new device(id: 1,icon: icon,name: _name.text));
+
+                                          print("prjgfhjedd");
+                                            utils.devices.add(new device(id: 1,icon:_name.text,name: _name.text));
                                             _name.text='';
+                                            utils.save();
                                           });
 
                                         }
@@ -296,9 +288,23 @@ if(connection.isConnected) {
                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                        crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
                    itemBuilder: (BuildContext context, int index) {
+                     String _icon=null;
+                     List<String>icons=  iconMap.keys.toList();
+                     for(int i=0;i<icons.length;i++)
+                     {
+                       if(utils.devices[index].icon.contains(icons[i])) {
+                         _icon = icons[i];
+                       }
+                     }
+                     print("predd");
+                     IconData icon;
+                     if(_icon==null)
+                       icon=MdiIcons.devices;
+                     else
+                       icon=MdiIcons.fromString(_icon);
                      return new Container(
                        child: new GridTile(
-                           child: cardW(utils.devices[index].name, utils.devices[index].icon, index) //just for testing, will fill with image later
+                           child: cardW(utils.devices[index].name, icon, index) //just for testing, will fill with image later
                        ),
                      );
                    },
