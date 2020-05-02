@@ -83,6 +83,7 @@ class _AfterSplash extends State<AfterSplash> {
           onLongPress: (){
             setState(() {
               utils.devices.removeAt(id);
+              utils.save();
             });
           },
           onTap: (){
